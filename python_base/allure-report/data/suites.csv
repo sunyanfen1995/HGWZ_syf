@@ -1,0 +1,4 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Thu Sep 17 21:38:57 CST 2020","Thu Sep 17 21:38:57 CST 2020","3","","test_allure","TestLogin","","","test_account_false",""
+"passed","Thu Sep 17 21:38:57 CST 2020","Thu Sep 17 21:38:57 CST 2020","4","","test_allure","TestLogin","","","登录-登录成功",""
+"passed","Thu Sep 17 21:38:57 CST 2020","Thu Sep 17 21:38:57 CST 2020","2","","test_allure","TestLogin","","","登录-登录失败",""

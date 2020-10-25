@@ -1,0 +1,52 @@
+{
+  "uid" : "ab17fc5a4eb3bca4b216b548c7f9fcbc",
+  "name" : "timeline",
+  "children" : [ {
+    "name" : "DESKTOP-44CRJPV",
+    "children" : [ {
+      "name" : "18744-MainThread",
+      "children" : [ {
+        "name" : "test_account_false",
+        "uid" : "ce21e447169428fe",
+        "parentUid" : "f49e99be71869356ac7f286abff3a71f",
+        "status" : "passed",
+        "time" : {
+          "start" : 1600349937992,
+          "stop" : 1600349937995,
+          "duration" : 3
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      }, {
+        "name" : "登录-登录失败",
+        "uid" : "2ac981db57189ef9",
+        "parentUid" : "f49e99be71869356ac7f286abff3a71f",
+        "status" : "passed",
+        "time" : {
+          "start" : 1600349937980,
+          "stop" : 1600349937982,
+          "duration" : 2
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      }, {
+        "name" : "登录-登录成功",
+        "uid" : "74ce4da646a7c986",
+        "parentUid" : "f49e99be71869356ac7f286abff3a71f",
+        "status" : "passed",
+        "time" : {
+          "start" : 1600349937962,
+          "stop" : 1600349937966,
+          "duration" : 4
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      } ],
+      "uid" : "f49e99be71869356ac7f286abff3a71f"
+    } ],
+    "uid" : "f1ea06f10db22e5138aa07c94cb9d6a9"
+  } ]
+}

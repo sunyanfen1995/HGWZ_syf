@@ -1,0 +1,31 @@
+[ {
+  "uid" : "ce21e447169428fe",
+  "name" : "test_account_false",
+  "time" : {
+    "start" : 1600349937992,
+    "stop" : 1600349937995,
+    "duration" : 3
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "74ce4da646a7c986",
+  "name" : "登录-登录成功",
+  "time" : {
+    "start" : 1600349937962,
+    "stop" : 1600349937966,
+    "duration" : 4
+  },
+  "status" : "passed",
+  "severity" : "trivial"
+}, {
+  "uid" : "2ac981db57189ef9",
+  "name" : "登录-登录失败",
+  "time" : {
+    "start" : 1600349937980,
+    "stop" : 1600349937982,
+    "duration" : 2
+  },
+  "status" : "passed",
+  "severity" : "normal"
+} ]

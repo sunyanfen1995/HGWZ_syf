@@ -1,0 +1,4 @@
+#encoding=utf-8
+123
+aaa
+bbbb
