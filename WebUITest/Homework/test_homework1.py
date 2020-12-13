@@ -14,8 +14,15 @@ class TestWework(Base):
         """导入失败"""
         db = shelve.open('cookies')
         cookies = db['cookie']
+        db.close() #用完关闭db
         self.driver.get('https://work.weixin.qq.com/wework_admin/frame#index')  # 打开首页
         for cookie in cookies:
+            #过期时间字段expity如果是float格式，需要转成int，也可以把这个字段删除
+            if isinstance(cookie.get('expity'),float):
+                cookie['expity'] = int(cookie['expity'])
+            # #删除这个字段
+            # if 'expity' in cookie.keys():
+            #     cookie.pop('expity')
             self.driver.add_cookie(cookie)
         self.driver.refresh() #重新刷新页面后便是登录状态
         time.sleep(3)

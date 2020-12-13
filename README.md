@@ -9,3 +9,6 @@
 #pytest_functions = test_*
 #addopts = -vs --alluredir=./result
 #norecursedirs = demo
+
+#webUI
+#driver需要放在基类

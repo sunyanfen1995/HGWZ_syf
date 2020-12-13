@@ -1,4 +1,5 @@
 #encoding=utf-8
+import json
 import requests
 
 import time
@@ -50,7 +51,24 @@ class Tag:
         )
         return r
 
-    def add(self,group_name, tag_name):
+    def find_group_id_by_name(self,group_name):
+        """ 判断group_name是否存在，不存在则抛异常"""
+        for group in self.list().json()['tag_group']:
+            if group_name in group['group_name']:
+                return group['group_id']
+        print('group name not in group')   # todo: 替换成logging
+        return ""
+        #raise ValueError('group name not in group')  #思考：为什么不是return False？因为当group_id是“”，也是会等效于False
+
+    def is_group_id_exist(self, group_id):
+        """查询group_id是否存在"""
+        for group in self.list().json()['tag_group']:
+            if group_id in group['group_id']:
+                return True
+        print('group id not in group')   # todo: 替换成logging
+        return ""
+
+    def add(self,group_name, tag_name, **kwargs):   #**kwargs 代表其他非必要字段
         """添加标签"""
         r = requests.post('https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_corp_tag',
                           params={
@@ -58,27 +76,75 @@ class Tag:
                           },
                           json={
                               "group_name": group_name,
-                              "order": 1,
-                              "tag": [{
-                                  "name": tag_name
-                              }
-                              ]
+                              "tag":tag_name
+                              **kwargs
                           }
         )
+        print(json.dumps(r.json(), indent=2))
         return r
 
-    def delect(self,group_id: list=None ,tag_id: list=None):
-        """删除标签或者组"""
+    def add_and_detect(self,group_name, tag_name, **kwargs):
+        """添加的数据如果存在，则删除，起到数据清理的作用"""
+        r = self.add(group_name, tag_name, **kwargs)
+        # 40071 元素存在
+        if r.status_code==200 and r.json()['errcode'] =='40071':
+            group_id = self.find_group_id_by_name(group_name)
+            if not group_id:
+                return ""
+            self.delect_group(group_id)
+            self.add(group_name, tag_name, **kwargs)
+        result = self.find_group_id_by_name(group_name)
+        return result
+
+
+
+
+
+
+    #查询tag_id--->删除tag_id
+    #如果正常，返回成功；如果异常，手动获取
+    # 注意点： tag_id 和 group_id有一个有问题的话  那这个请求就不会成功
+    def delect_group(self,group_id):
+
+        """删除组"""
         r = requests.post('https://qyapi.weixin.qq.com/cgi-bin/externalcontact/del_corp_tag',
-                          params={
-                              'access_token': self.token
-                          },
-                          json={
-                              "tag_id": tag_id,
-                             "group_id":group_id
-                                }
+                          params={ 'access_token': self.token},
+                          json={"group_id":group_id }
                          )
+        print(json.dumps(r.json(), indent=2))
         return r
+
+
+    def delect_tag(self,tag_id):
+
+        """删除标签"""
+        r = requests.post('https://qyapi.weixin.qq.com/cgi-bin/externalcontact/del_corp_tag',
+                          params={ 'access_token': self.token},
+                          json={"group_id":tag_id }
+                         )
+        print(json.dumps(r.json(), indent=2))
+        return r
+
+    #思路：可以指定一个group_id，如果不存在，则生成一个
+    def delect_and_detect_group(self,group_ids):
+        """删除并查询group"""
+        delect_group_ids= []
+        r = self.delect_group(group_ids)
+        if r.json()['errcode'] == 40068:  #非法的id
+            for group_id in group_ids:  #这边考虑到删除接口中可以传入多个group_id，所以要多一层判断
+                # 如果不存在，则生成一个；如果存在 就直接存入列表中
+                if not self.is_group_id_exist(group_id):
+                    group_id = self.add_and_detect("TMP00123",[{"name":"tag123"}]).json()
+                    delect_group_ids.append(group_id)  #将group_id追加到列表中
+                else:
+                    delect_group_ids.append(group_id)
+                r = self.delect_group(delect_group_ids)
+
+
+
+
+
+
 
 
 

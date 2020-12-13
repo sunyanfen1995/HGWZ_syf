@@ -53,30 +53,53 @@ class TestTag():
     # 删除标签
     # 数据清理
 
+    #报错：40014 无效的token
+    #报错：40071 tag name 已经存在   处理方案：1.删除对应tag（推荐）；  2.在已有tag_name的基础上追加名字（时间戳，手写计数器）
 
-    @pytest.mark.parametrize('tag_name',['tag_add_abc4','tag_add_中文4','tag_add_@@@4'],ids=['添加字母','添加中文','添加字符'])
+   # @pytest.mark.parametrize('tag_name',['tag_add_abc4','tag_add_中文4','tag_add_@@@4'],ids=['添加字母','添加中文','添加字符'])
     def test_tag_add(self,tag_name):
         """创建全新的组和标签"""
-        r = self.tag.add(self.group_name, tag_name)
-        print(r.json())
-        print('=========')
+        group_name = 'python_1212'
+        tag_name = [
+            {"name":"tag1"},
+            {"name":"tag2"},
+            {"name":"tag3"}
+        ]
+        r= self.tag.add(group_name=group_name, tag_name= tag_name)
+
         assert r.status_code == 200
         assert tag_name in jsonpath.jsonpath(r.json(), '$..name')
 
-        # 保存group_id，然后在teardwon里删除
-        group_id = jsonpath.jsonpath(r.json(), f"$..[?(@.group_name=='{self.group_name}')]")[0]['group_id']
-        self.group_id.append(group_id)
-        print(self.group_id)
+    def test_add_and_delect(self):
+        group_name = 'python_1212'
+        tag_name = [
+            {"name": "tag1"},
+            {"name": "tag2"},
+            {"name": "tag3"}
+        ]
+        r=self.tag.add_and_detect(group_name,tag_name)
+        assert r.join()['errcode'] == 0
 
 
-    def test_tag_delect(self):
+    # 报错：40068 非法的tag_id
+    # 0.添加tag
+    # 1.如果删除tag有问题，
+    # 2.再次进行重试（重试次数：n）  手动执行：需要借助pytest的钩子（rerun插件）
+    #   a. 添加一个接口
+    #   b. 对新添加的接口进行删除
+    #   c. 查询删除的结果
+    def test_delect_tag(self):
         """删除指定tag_id"""
         print(self.tag.list().json())
         tag_id = jsonpath.jsonpath(self.tag.list().json(), '$..id')[0]
         # tag_id='et_N2IEQAA59aBAEJdui6_DGm0RU5k5A'
-        r = self.tag.delect(tag_id)
+        r = self.tag.delect_tag(tag_id)
         assert r.status_code == 200
         assert tag_id not in jsonpath.jsonpath(self.tag.list().json(), '$..id')
+
+    def test_delete_and_detect_group(self):
+        r= self.tag.delect_and_detect_group(['xxxxx'])
+        assert r.json()['errcode'] == 0
 
 
 

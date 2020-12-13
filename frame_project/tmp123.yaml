@@ -1,0 +1,13 @@
+test_a:
+  - print: [test_a]
+
+test_a2:
+  - print: [test_a2]
+
+
+test_demo:
+  - hello.a: []
+  - print: ['abcde']
+  - re.search: ['.*','xxxx']
+  - save: [temp]
+  - print: [$(temp)]

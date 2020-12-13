@@ -2,6 +2,7 @@
 import pytest
 
 import time
+from selenium import webdriver
 
 from WebUITest.录播课程.base import Base
 
@@ -26,6 +27,7 @@ class TestJS(Base):
         #也可以在合并执行，但只返回了第一个rerutn值：因为return只
         print(self.driver.execute_script("return document.title; return JSON.stringify(performance.timing)"))
 
+    @pytest.mark.skip
     def test_datatime(self):
         """对事件控件的处理"""
         self.driver.get('https://www.12306.cn/index/')
@@ -34,6 +36,13 @@ class TestJS(Base):
         time.sleep(2)
         #打印当前时间
         print(self.driver.execute_script('return document.getElementById("train_date").value'))
+
+
+    def test_js(self):
+        """获取H5页面的性能数据"""
+        # self.driver = webdriver.Chrome()
+        self.driver.get('https://www.12306.cn/index/')
+        print(self.driver.execute_script('return JSON.stringify(window.performance.timing)'))
 
 
 
