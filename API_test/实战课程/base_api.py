@@ -17,7 +17,7 @@ class BaseApi:
         #     params={'corpid': corpid, 'corpsecret': corpsecret}
         # )
         data={
-            "method":"get",
+            "method": "get",
             "url": 'https://qyapi.weixin.qq.com/cgi-bin/gettoken',
             "params": {'corpid': corpid, 'corpsecret': corpsecret}
         }
@@ -25,9 +25,11 @@ class BaseApi:
         token = r.json()['access_token']
         return token
 
-    def send(self, **kwargs):
+
+    def send(self, kwargs):
         """对请求方法的改造"""
         r = requests.request(**kwargs)   #requests.request()是get、post等底层实现，详情见源码
         print(json.dumps(r.json(), indent=2))
         return r
+
 

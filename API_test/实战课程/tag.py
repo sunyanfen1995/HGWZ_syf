@@ -13,10 +13,12 @@ class Tag(BaseApi):
     #方法1：使用类变量
     # token = None
     #方法2：初始化
-    def __init__(self):
-        super.__init__()  #继承父类的init 方法来获取token
+    # def __init__(self):
+    #     super.__init__()  #继承父类的init 方法来获取token
         # self.token = self.get_token()
 
+    def __init__(self):
+        super().__init__()
     # def get_token(self):
     #     """获取token"""
     #     corpid = 'ww3ad1d98f7b75e8c6'
@@ -111,17 +113,14 @@ class Tag(BaseApi):
         #                       **kwargs
         #                   }
         # )
-        data ={
-            "method":'https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_corp_tag',
-            "params": {
-                         'access_token': self.token
-                     },
-            "json": {
-                    "group_name": group_name,
-                    "tag": tag_name
-                           ** kwargs
-                     }
-        }
+        data = {
+            "method": "post",
+            "url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_corp_tag",
+            "params": {"access_token": self.token},
+            "json": {"group_name": group_name,
+                     "tag": tag_name,
+                     **kwargs
+                     }}
         r = self.send(data)
         print(json.dumps(r.json(), indent=2))
         return r
@@ -137,6 +136,7 @@ class Tag(BaseApi):
             self.delect_group(group_id)
             self.add(group_name, tag_name, **kwargs)
         result = self.find_group_id_by_name(group_name)
+
         return result
 
 
@@ -201,11 +201,15 @@ class Tag(BaseApi):
             for group_id in group_ids:  #这边考虑到删除接口中可以传入多个group_id，所以要多一层判断
                 # 如果不存在，则生成一个；如果存在 就直接存入列表中
                 if not self.is_group_id_exist(group_id):
-                    group_id = self.add_and_detect("TMP00123", [{"name":"tag123"}]).json()
+                    print("新添加一个group_id")
+                    group_id = self.add_and_detect("TMP00123", [{"name":"tag123"}])
                     delect_group_ids.append(group_id)  #将group_id追加到列表中
                 else:
                     delect_group_ids.append([group_id])
-                r = self.delect_group(delect_group_ids)
+        r = self.delect_group(delect_group_ids)
+        print('最后删除的结果是：',r.json())
+        return r
+
 
 
 
