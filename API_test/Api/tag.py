@@ -1,10 +1,7 @@
 #encoding=utf-8
 import json
-import requests
 
-import time
-
-from API_test.实战课程.base_api import BaseApi
+from API_test.Api.base_api import BaseApi
 
 
 class Tag(BaseApi):

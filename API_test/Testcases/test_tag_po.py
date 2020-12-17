@@ -3,7 +3,7 @@
 
 import jsonpath
 import time
-from API_test.实战课程.tag import Tag
+from API_test.Actual_Practice.Api.tag import Tag
 import pytest
 
 #todo:底层具体的实现框架代码耦合严重，无法适用变化，比如公司切换了协议，如pb、dubbo

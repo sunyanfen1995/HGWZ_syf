@@ -1,0 +1,16 @@
+Test_data:
+  "userid": "syf1"
+  "name": "sunyanfen"
+  "mobile": '17300000002'
+  "department": [1]
+
+
+create:
+  "method": "post"
+  "url": "https://qyapi.weixin.qq.com/cgi-bin/user/create?access_token=${token}"
+  "json":
+      "userid":  ${userid}
+      "name":  ${name}
+      "mobile":  ${moblie}
+      "department":
+        - ${department}
