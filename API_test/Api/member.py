@@ -1,16 +1,15 @@
 #encoding=utf-8
 
 from API_test.Api.base_api import BaseApi
+from API_test.Utils.logger import Logger
 from API_test.Utils.utils import Utils
 
 
 class Member(BaseApi):
-
     def __init__(self):
         super().__init__()
         self.utils = Utils()
-
-
+        self.logger = Logger()
 
 
     def add(self,userid,name,mobile,department=None,**kwargs):
@@ -55,7 +54,6 @@ class Member(BaseApi):
             #      'userid': userid
             # }
         }
-        print(data)
         r = self.send(data)
         return r
 
@@ -72,7 +70,6 @@ class Member(BaseApi):
                 'userid': userid
             }
         }
-        print(data)
         r = self.send(data)
         return r
 
@@ -104,20 +101,25 @@ class Member(BaseApi):
         r = self.add(userid, name, mobile, department,**kwargs)
         if r.status_code == 200 and r.json()['errcode'] == 60102:
             # userid 已经存在，则直接删除 后添加
-            print('userid existed, goto delect')
+            # print('userid existed, goto delect')
+            self.logger.debug('userid existed, goto delect')
             self.delete(userid)
             # 确认删除成功
             assert self.list(userid).json()['errcode'] == 60111
+            self.logger.debug('userid already delected')
             # 递归该方法
             return self.add_and_detect(userid, name, mobile, department, **kwargs)
 
         elif r.status_code == 200 and r.json()['errcode'] == 60104:
             # mobile 手机号码存在，则进行加+1,再重新请求
-            print('mobile existed, goto update mobile')
+            # print('mobile existed, goto update mobile')
+            self.logger.debug('mobile existed, goto update mobile')
             new_mobile = self.utils.update_mobile(mobile=mobile)
-            print(f"new_mobile:{new_mobile}")
+            # print(f"new_mobile:{new_mobile}")
+            self.logger.debug(f"new_mobile already get:{new_mobile}")
             return self.add_and_detect(userid=userid, name=name, mobile=new_mobile, department=department, **kwargs)
         elif r.status_code !=200:
+            self.logger.debug(f'requests not success:{r.status_code}')
             return False
         return r
 
@@ -127,10 +129,12 @@ class Member(BaseApi):
         r = self.delete(userid)
         #如果指定的userid没有
         if r.status_code == 200 and r.json()['errcode'] == 60111:
-            print('userid not found, goto add')
+            # print('userid not found, goto add')
+            self.logger.debug('userid not found, goto add')
             if self.add_and_detect(userid=userid, name='Delect', mobile= '173064004322', department=[1]).json()['errmsg'] == "created":
                 return self.delect_and_detect(userid)
         elif r.status_code !=200:
+            self.logger.debug(f'requests not success:{r.status_code}')
             return False
         return r
 

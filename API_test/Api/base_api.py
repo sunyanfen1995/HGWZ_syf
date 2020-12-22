@@ -2,12 +2,16 @@
 import json
 import requests
 
+from API_test.Utils.logger import Logger
+
 
 class BaseApi:
 
+    logger = Logger()
     def __init__(self):
-        # self.token = self.get_token()
+        self.token = self.get_token()
         self.mail_token = self.get_mail_token()
+
 
     def get_token(self):
         """获取token"""
@@ -23,8 +27,12 @@ class BaseApi:
             "params": {'corpid': corpid, 'corpsecret': corpsecret}
         }
         r = self.send(data)
-        print('r:',r.json())
+        Logger().info(f'r:{r.json()}')
+        self.logger.info(f'r:{r.json()}')
+        # print('r:',r.json())
         token = r.json()['access_token']
+        Logger().info(f'token:{token}')
+
         return token
 
     def get_mail_token(self):
@@ -39,6 +47,7 @@ class BaseApi:
         }
         r = self.send(data)
         token = r.json()['access_token']
+        Logger().logger.info(f'token:{token}')
         assert r.status_code == 200
         return token
 
@@ -51,11 +60,16 @@ class BaseApi:
     @staticmethod
     def send(kwargs):
         r = requests.request(**kwargs)
-        print(f'url: {r.url}')
-        print(f'params: {kwargs["params"]}')
+        Logger().info(f'url: {r.url}')
+        Logger().info(f'params: {kwargs["params"]}')
+        # print(f'url: {r.url}')
+        # print(f'params: {kwargs["params"]}')
         if 'json' in kwargs:
-            print(f'json: {kwargs["json"]}')
-        print(json.dumps(r.json(), ensure_ascii=False, indent=4))
+            # print(f'json: {kwargs["json"]}')
+            Logger().debug(f'json: {kwargs["json"]}')
+        # print(json.dumps(r.json(), ensure_ascii=False, indent=4))
+        Logger().info(json.dumps(r.json(), ensure_ascii=False, indent=4))
+
         return r
 
 
