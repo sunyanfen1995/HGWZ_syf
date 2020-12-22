@@ -120,3 +120,20 @@ class Member(BaseApi):
         elif r.status_code !=200:
             return False
         return r
+
+
+    def delect_and_detect(self, userid):
+        """删除并检测"""
+        r = self.delete(userid)
+        #如果指定的userid没有
+        if r.status_code == 200 and r.json()['errcode'] == 60111:
+            print('userid not found, goto add')
+            if self.add_and_detect(userid=userid, name='Delect', mobile= '173064004322', department=[1]).json()['errmsg'] == "created":
+                return self.delect_and_detect(userid)
+        elif r.status_code !=200:
+            return False
+        return r
+
+
+
+

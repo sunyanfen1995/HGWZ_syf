@@ -46,16 +46,23 @@ class Test_member():
     @pytest.mark.skip
     def test_delect(self):
         """测试删除接口"""
-        # userid = "syf2"
+        userid = "syf1"
         r = self.member.delete(self.userid)
         assert r.status_code== 200
         assert r.json()['errmsg'] == 'deleted'
 
-
+    @pytest.mark.skip
     def test_add_and_detect(self):
         """测试：添加前检测"""
         r = self.member.add_and_detect(self.userid,self.name,self.mobile,self.department)
         assert r.json()['errmsg'] == "created"
+
+    # @pytest.mark.skip
+    def test_delect_and_detect(self):
+        """测试：删除前先确认"""
+        r = self.member.delect_and_detect(self.userid)
+        assert r.json()['errmsg'] == "deleted"
+
 
 
 
