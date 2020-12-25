@@ -9,10 +9,10 @@ class BaseApi:
 
     logger = Logger()
     def __init__(self):
-        self.token = self.get_token()
+        # self.token = self.get_token()  #用不着  就注释了 省的这个方法要执行一遍
         self.mail_token = self.get_mail_token()
 
-
+    #
     def get_token(self):
         """获取token"""
         corpid = 'ww3ad1d98f7b75e8c6'
@@ -27,13 +27,13 @@ class BaseApi:
             "params": {'corpid': corpid, 'corpsecret': corpsecret}
         }
         r = self.send(data)
-        Logger().info(f'r:{r.json()}')
+        # Logger().info(f'r:{r.json()}')
         self.logger.info(f'r:{r.json()}')
         # print('r:',r.json())
         token = r.json()['access_token']
-        Logger().info(f'token:{token}')
-
+        Logger().info(f'获取的token:{token}')
         return token
+
 
     def get_mail_token(self):
         """获取通讯录的Secret"""
@@ -47,8 +47,7 @@ class BaseApi:
         }
         r = self.send(data)
         token = r.json()['access_token']
-        Logger().logger.info(f'token:{token}')
-        assert r.status_code == 200
+        # Logger().logger.info(f'获取的mail_token:{token}')
         return token
 
     # def send(self, kwargs):
@@ -60,16 +59,22 @@ class BaseApi:
     @staticmethod
     def send(kwargs):
         r = requests.request(**kwargs)
-        Logger().info(f'url: {r.url}')
-        Logger().info(f'params: {kwargs["params"]}')
         # print(f'url: {r.url}')
         # print(f'params: {kwargs["params"]}')
         if 'json' in kwargs:
-            # print(f'json: {kwargs["json"]}')
-            Logger().debug(f'json: {kwargs["json"]}')
+            print(f'json: {kwargs["json"]}')
+            # Logger().debug(f'json: {kwargs["json"]}')
         # print(json.dumps(r.json(), ensure_ascii=False, indent=4))
         Logger().info(json.dumps(r.json(), ensure_ascii=False, indent=4))
-
         return r
+
+    # params = {}
+    # def send(self, data):
+    #     """数据驱动:转化数据 """
+    #     raw_data = json.dumps(data)  # json-->str
+    #     for key, value in self.params.items():
+    #         raw_data = raw_data.replace("&{" + key + "}", value)  # 什么意思
+    #     data = json.loads(raw_data)  # 当前是dict格式
+    #     return requests.request(**data).json()  # **data:**可以解析字典，以键值对形式
 
 
