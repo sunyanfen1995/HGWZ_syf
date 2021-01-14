@@ -14,7 +14,7 @@ from AppUITest.实战课程.page.main_page import MainPage
 with open('../datas/caps.yml') as f:
     myconfig = yaml.safe_load(f)
     caps = myconfig['desirecaps']
-    ip = myconfig['server']['ip']()
+    ip = myconfig['server']['ip']
     port = myconfig['server']['port']
 
 
@@ -57,4 +57,4 @@ class App(BasePage):
 
     def goto_main(self) -> MainPage:
         # 进入到首页
-        return MainPage(self.driver)
+        return MainPage()

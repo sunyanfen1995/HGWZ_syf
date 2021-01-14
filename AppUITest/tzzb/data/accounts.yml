@@ -1,0 +1,11 @@
+Auto_Fund:
+  ajj:
+    account: '330523199108275241'
+    password: 'wyp123456'
+
+  yfd:
+    account: '330902198902172915'
+    password: '890217'
+
+Manual_Fund:
+  accout: 'test_fund'

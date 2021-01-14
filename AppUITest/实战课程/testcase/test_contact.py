@@ -11,6 +11,7 @@ class TestContact:
         self.app = App()
         self.main = self.app.start().goto_main()
 
+
     def teardown(self):
         self.app.stop()
     @pytest.mark.skip()
