@@ -27,6 +27,11 @@ class BasePage:
         logging.info('click')
         self.find(by, locator).click()
 
+    def find_and_sendkeys(self, by, locator, value):
+        logging.info('sendkey')
+        self.find(by, locator).send_keys(value)
+
+
     def find_by_scroll(self, text):
         logging.info('find_by_scroll')
         logging.info(text)
@@ -36,9 +41,42 @@ class BasePage:
                                  .scrollIntoView(new UiSelector()\
                                  .text("{text}").instance(0));')
 
+
+
     def get_toast_text(self):
         logging.info('get_toast_text')
-
         result = self.find(MobileBy.XPATH, "//*[@class='android.widget.Toast']").text
         logging.info(result)
         return result
+
+    def swipe_up(self, num ):
+        """向上滑动"""
+        logging.info('swipe_up')
+        x = self.driver.get_window_size()['width']
+        y = self.driver.get_window_size()['height']
+        x1 = int(x * 0.5)
+        y1 = int(y * 0.9)
+        x2 = int(x * 0.5)
+        y2 = int(y * 0.1)
+        for i in range(num):
+            self.driver.swipe(x1,y1,x2,y2, 2000)
+
+    def swipe_left(self, num):
+        """向左滑动"""
+        logging.info('swipe_up')
+        x = self.driver.get_window_size()['width']
+        y = self.driver.get_window_size()['height']
+        x1 = int(x * 0.9)
+        y1 = int(y * 0.5)
+        x2 = int(x * 0.1)
+        y2 = int(y * 0.5)
+        for i in range(num):
+            self.driver.swipe(x1, y1, x2, y2, 2000)
+
+    def handle_blacklist(self):
+        """处理黑名单"""
+        _blacklist = [
+            (MobileBy.ID, 'com.hexin.zhanghu:id/app_rate_review_close')
+                      ]
+        for elem in _blacklist:
+            self.find(*elem)

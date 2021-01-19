@@ -57,4 +57,4 @@ class App(BasePage):
 
     def goto_main(self) -> MainPage:
         # 进入到首页
-        return MainPage()
+        return MainPage(self.driver)

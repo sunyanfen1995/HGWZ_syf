@@ -9,7 +9,7 @@ from AppUITest.tzzb.page.fund.addfundacc_page import AddFundAccPage
 
 class FundTabPage(BasePage):
 
-    add_btn = (MobileBy.XPATH, '//*[@text="添加账户"]')
+    add_btn = (MobileBy.ID, 'com.hexin.zhanghu:id/addAccTv')
     curr_page_title = (MobileBy.ID, 'com.hexin.zhanghu:id/titleTv')
     curr_fund_name = (MobileBy.ID, 'com.hexin.zhanghu:id/login_qs_qsname_tv')
 

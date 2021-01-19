@@ -25,9 +25,9 @@ class LoginFundAccPage(BasePage):
         """获取并返回当前基金名称"""
         return self.find(*self.curr_fund_name).text
 
-    def login_ajj(self, acc, pwd):
+    def login_ajj(self,ajj_acc, all_pwd):
         """绑定爱基金"""
-        self.find_and_sendkeys(MobileBy.ID,'com.hexin.zhanghu:id/login_qs_account_edit',ajj_acc)
+        self.find_and_sendkeys(MobileBy.ID,'com.hexin.zhanghu:id/login_qs_account_edit', ajj_acc)
         self.find_and_sendkeys(MobileBy.ID, 'com.hexin.zhanghu:id/login_qs_account_pwd_edit', ajj_pwd)
         self.find_and_click(MobileBy.ID, 'com.hexin.zhanghu:id/login_qs_submit_bt')
 
@@ -49,7 +49,10 @@ class LoginFundAccPage(BasePage):
         self.login_ajj(acc, pwd)
         time.sleep(5)
         # 如果不存在报错提示框，跳转持仓
-        if not self.find(MobileBy.ID, 'com.hexin.zhanghu:id/md_title'):
+        # if not self.find(MobileBy.ID, 'com.hexin.zhanghu:id/md_title'):
+        # 如果定位到持仓页的标题，则说明绑定成功
+        if self.find(MobileBy.ID, 'com.hexin.zhanghu:id/my_new_fund_navi_title'):
+            print('没有找到报错弹窗')
             return self.login_ajj_success()
         # 如果存在报错，处理掉弹窗重新登录
         else:
